@@ -9,22 +9,21 @@
                         <div class="col-md-12">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ route('pariwisata.index') }}">Pariwisata</a></li>
-                                <li class="breadcrumb-item active">Edit Pariwisata</li>
+                                <li class="breadcrumb-item"><a href="{{ route('kos.index') }}">Kos</a></li>
+                                <li class="breadcrumb-item active">Tambah Kos</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Edit Pariwisata</h2>
+                                <h2 class="mb-0">Tambah Kos</h2>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <form id="pariwisataForm" method="POST" action="{{ route('pariwisata.update', $pariwisata->id) }}" enctype="multipart/form-data">
+            <form id="kosForm" method="POST" action="{{ route('kos.store') }}" enctype="multipart/form-data">
                 @csrf
-                @method('POST')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
@@ -33,10 +32,7 @@
                                     <label for="foto">Foto</label>
                                 </div>
                                 <div class="col-md-10">
-                                    @if ($pariwisata->foto)
-                                        <img src="{{ asset('storage/' . $pariwisata->foto) }}" alt="Foto Pariwisata" class="mt-2 img-thumbnail" width="100">
-                                    @endif
-                                    <input type="file" class="form-control" id="foto" name="foto">
+                                    <input type="file" class="form-control" id="foto" name="foto" required>
                                 </div>
                             </div>
                         </div>
@@ -44,10 +40,10 @@
                         <div class="form-group mt-3">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="nm_pariwisata">Nama Pariwisata</label>
+                                    <label for="nm_kos">Nama Kos</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="nm_pariwisata" name="nm_pariwisata" value="{{ old('nm_pariwisata', $pariwisata->nm_pariwisata) }}" required>
+                                    <input type="text" class="form-control" id="nm_kos" name="nm_kos" required>
                                 </div>
                             </div>
                         </div>
@@ -58,25 +54,23 @@
                                     <label for="description">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor">{!! old('description', $pariwisata->description) !!}</div>
-                                    <textarea name="description" id="description" style="display: none;">{{ old('description', $pariwisata->description) }}</textarea>
+                                    <div id="description-editor"></div>
+                                    <textarea name="description" id="description" style="display: none;"></textarea>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group mt-3">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="kabupaten_id">Kabupaten</label>
+                                    <label for="tipe">Tipe</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select" required>
-                                        <option value="">Select Kabupaten</option>
-                                        @foreach($kabupatens as $kabupaten)
-                                            <option value="{{ $kabupaten->id }}" {{ old('kabupaten_id', $pariwisata->kabupaten_id) == $kabupaten->id ? 'selected' : '' }}>
-                                                {{ $kabupaten->nama_kabupaten }}
-                                            </option>
-                                        @endforeach
+                                    <select name="tipe" id="tipe" class="form-select" required>
+                                        <option value="">Pilih Tipe</option>
+                                        <option value="Putra">Putra</option>
+                                        <option value="Putri">Putri</option>
+                                        <option value="Campur">Campur</option>
                                     </select>
                                 </div>
                             </div>
@@ -84,7 +78,7 @@
                     </div>                    
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm px-4">Simpan</button>
-                <a href="{{ route('pariwisata.index') }}" class="btn btn-secondary btn-sm px-4">Kembali</a>
+                <a href="{{ route('kos.index') }}" class="btn btn-secondary btn-sm px-4">Kembali</a>
             </form>
         </div>
     </div>
@@ -97,39 +91,47 @@
 
 <script>
     $(document).ready(function() {
-        var quill = new Quill('#description-editor', {
-            theme: 'snow'
+        var table = $('#kosTable').DataTable({
+            processing: true,
+            serverSide: true,
+            scrollX: true,
+            ajax: '{{ route('kos.getData') }}',  // Mengambil data dari server
+            columns: [
+                { data: 'foto', name: 'foto' },
+                { data: 'nm_kos', name: 'nm_kos' },
+                { data: 'description', name: 'description' },
+                { data: 'tipe', name: 'tipe' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
         });
-
-        $('#pariwisataForm').submit(function(e) {
+        // Sync Quill content to the textarea before form submit
+        $('#kosForm').on('submit', function(e) {
             e.preventDefault();
             $('#description').val(quill.root.innerHTML);
-
-            var formData = new FormData($(this)[0]);
+            var formData = new FormData(this);
 
             $.ajax({
                 url: $(this).attr('action'),
-                type: 'POST',
+                method: 'POST',
                 data: formData,
                 processData: false,
-                contentType: false, 
+                contentType: false,
                 success: function(response) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Pariwisata Berhasil Diperbarui!',
+                        title: 'Berhasil!',
                         text: response.message,
                         confirmButtonText: 'OK',
                         willClose: () => {
-                            window.location.href = '{{ route('pariwisata.index') }}';
+                            window.location.href = '{{ route('kos.index') }}';
                         }
                     });
                 },
-                error: function(xhr, status, error) {
-                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Terjadi kesalahan, coba lagi!';
+                error: function(response) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Gagal!',
-                        text: errorMessage,
+                        title: 'Terjadi Kesalahan',
+                        text: 'Gagal menyimpan data, silakan coba lagi!',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -137,4 +139,3 @@
         });
     });
 </script>
-

@@ -1,6 +1,6 @@
 @extends('index')
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   
     crossorigin="anonymous">
 </head>
 @section('content')
@@ -11,13 +11,13 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                                <li class="breadcrumb-item active">Pariwisata</li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
+                                <li class="breadcrumb-item active">Info</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Pariwisata</h2>
+                                <h2 class="mb-0">Info</h2>
                             </div>
                         </div>
                     </div>
@@ -26,18 +26,19 @@
             
             <!-- Tombol Tambah -->
             <div class="mb-3 d-flex justify-content-end">
-                <a href="{{ route('pariwisata.create') }}" class="btn btn-success btn-sm px-4">Tambah</a>
+                <a href="{{ route('info.create') }}" class="btn btn-success btn-sm px-4">Tambah</a>
             </div>
 
-            <!-- Tabel Data Kabupaten -->
+            <!-- Tabel Data Info -->
             <div class="card">
                 <div class="card-body">
-                    <table id="pariwisataTable" class="table table-bordered dt-responsive nowrap" style="width:100%">
+                    <table id="infoTable" class="table table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Foto</th>
-                                <th>Pariwisata</th>
-                                <th>Kabupaten</th>
+                                <th>Judul</th>
+                                <th>Tanggal</th>
+                                <th>Deskripsi</th>
                                 <th width="50px">Action</th>
                             </tr>
                         </thead>
@@ -58,20 +59,21 @@
 <script>
     $(document).ready(function() {
         // Inisialisasi DataTable
-        var table = $('#pariwisataTable').DataTable({
+        var table = $('#infoTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('pariwisata.getData') }}',  // Mengambil data dari server
+            scrollX: true,
+            ajax: '{{ route('info.getData') }}',  // Mengambil data dari server
             columns: [
-                { data: 'foto', name: 'foto', orderable: false, searchable: false },
-                { data: 'nm_pariwisata', name: 'nm_pariwisata' },
-                { data: 'nama_kabupaten', name: 'nama_kabupaten' },
+                { data: 'versi_info', name: 'versi_info' },
+                { data: 'nm_info', name: 'nm_info' },
+                { data: 'description', name: 'description' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
 
         // Hapus data dengan AJAX
-        $('#pariwisataTable').on('click', '.delete-btn', function() {
+        $('#infoTable').on('click', '.delete-btn', function() {
             var id = $(this).data('id');
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -84,7 +86,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('pariwisata') }}/' + id,
+                        url: '{{ url('info') }}/' + id,
                         method: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}',  // Pastikan untuk mengirim token CSRF

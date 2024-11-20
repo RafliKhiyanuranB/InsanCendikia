@@ -8,77 +8,100 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                                 <li class="breadcrumb-item"><a href="{{ route('event.index') }}">Event</a></li>
                                 <li class="breadcrumb-item active">Tambah Event</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Tambah Event</h2>
+                                <h2 class="mb-0">Tambah Data Event</h2>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <form id="eventForm">
+            <form id="eventForm" method="POST" action="{{ route('event.store') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="foto">Foto</label>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Form Tambah Event</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group row mb-3">
+                                    <label class="col-md-2 col-form-label" for="foto">Foto Event</label>
+                                    <div class="col-md-10">
+                                        <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" required>
+                                        @error('foto')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-md-10">
-                                    <input type="file" class="form-control" id="foto" name="foto" required>
+                                
+                                <div class="form-group row mb-3">
+                                    <label class="col-md-2 col-form-label" for="nm_event">Nama Event</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control @error('nm_event') is-invalid @enderror" id="nm_event" name="nm_event" value="{{ old('nm_event') }}" required>
+                                        @error('nm_event')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    <label class="col-md-2 col-form-label" for="tanggal">Tanggal Event</label>
+                                    <div class="col-md-10">
+                                        <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal') }}" required>
+                                        @error('tanggal')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    <label class="col-md-2 col-form-label" for="waktu">Waktu Event</label>
+                                    <div class="col-md-10">
+                                        <input type="time" class="form-control @error('waktu') is-invalid @enderror" id="waktu" name="waktu" value="{{ old('waktu') }}" required>
+                                        @error('waktu')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    <label class="col-md-2 col-form-label" for="lokasi">Lokasi Event</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control @error('lokasi') is-invalid @enderror" id="lokasi" name="lokasi" value="{{ old('lokasi') }}" required>
+                                        @error('lokasi')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label" for="description">Deskripsi</label>
+                                    <div class="col-md-10">
+                                        <div id="description-editor" style="height: 300px;"></div>
+                                        <textarea name="description" id="description" style="display: none;">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mt-4">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <a href="{{ route('event.index') }}" class="btn btn-secondary">Kembali</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="nm_event">Nama Event</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" id="nm_event" name="nm_event" required>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group" style="margin-bottom: 8%">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="description">Deskripsi</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <div id="description-editor"></div>
-                                    <textarea name="description" id="description" style="display: none;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="kabupaten_id">Kabupaten</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select">
-                                        <option value="">Select Kabupaten</option>
-                                        @foreach($kabupatens as $kabupaten)
-                                            <option value="{{ $kabupaten->id }}">{{ $kabupaten->nama_kabupaten }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-sm px-4" id="saveEventButton">Simpan</button>
-                <a href="{{ route('event.index') }}" class="btn btn-secondary btn-sm px-4">Kembali</a>
             </form>
         </div>
     </div>
@@ -91,24 +114,27 @@
 
 <script>
     $(document).ready(function() {
-        // Initialize Quill
         var quill = new Quill('#description-editor', {
-            theme: 'snow'
+            theme: 'snow',
+            placeholder: 'Tulis deskripsi event disini...'
         });
 
-        // Sync Quill content to the textarea before form submit
-        $('#saveEventButton').click(function() {
+        // Set existing content
+        quill.root.innerHTML = $('#description').val();
+
+        $('#eventForm').on('submit', function(e) {
+            e.preventDefault();
             $('#description').val(quill.root.innerHTML);
-            var formData = new FormData($('#eventForm')[0]);
-            formData.append('description', $('#description').val());
+            var formData = new FormData(this);
 
             $.ajax({
-                url: '{{ route('event.store') }}',
+                url: $(this).attr('action'),
                 method: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    console.log('Success:', response);
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
@@ -119,11 +145,19 @@
                         }
                     });
                 },
-                error: function(response) {
+                error: function(xhr) {
+                    console.log('Error:', xhr.responseJSON);
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    
+                    for (let key in errors) {
+                        errorMessage += errors[key][0] + '\n';
+                    }
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Terjadi Kesalahan',
-                        text: 'Gagal menyimpan data, silakan coba lagi!',
+                        text: errorMessage || 'Gagal menyimpan data, silakan coba lagi!',
                         confirmButtonText: 'OK'
                     });
                 }

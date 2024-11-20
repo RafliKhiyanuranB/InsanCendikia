@@ -11,13 +11,13 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                                 <li class="breadcrumb-item active">Kuliner</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Kuliner</h2>
+                                <h2 class="mb-0">Data Kuliner</h2>
                             </div>
                         </div>
                     </div>
@@ -26,19 +26,21 @@
             
             <!-- Tombol Tambah -->
             <div class="mb-3 d-flex justify-content-end">
-                <a href="{{ route('kuliner.create') }}" class="btn btn-success btn-sm px-4">Tambah</a>
+                <a href="{{ route('kuliner.create') }}" class="btn btn-success btn-sm px-4">
+                    <i class="fas fa-plus"></i> Tambah Kuliner
+                </a>
             </div>
 
             <!-- Tabel Data Kuliner -->
             <div class="card">
                 <div class="card-body">
-                    <table id="kulinerTable" class="table table-bordered dt-responsive nowrap" style="width:100%">
+                    <table id="kulinerTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Foto</th>
-                                <th>Kuliner</th>
-                                <th>Kabupaten</th>
-                                <th width="50px">Action</th>
+                                <th>Nama Kuliner</th>
+                                <th>Deskripsi</th>
+                                <th width="120px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,13 +63,60 @@
         var table = $('#kulinerTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('kuliner.getData') }}',  // Mengambil data dari server
+            ajax: '{{ route('kuliner.getData') }}',
             columns: [
-                { data: 'foto', name: 'foto', orderable: false, searchable: false },
+                { 
+                    data: 'foto', 
+                    name: 'foto',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return `<img src="${data}" alt="Foto Kuliner" class="img-thumbnail" width="100">`;
+                    }
+                },
                 { data: 'nm_kuliner', name: 'nm_kuliner' },
-                { data: 'nama_kabupaten', name: 'nama_kabupaten' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
+                { data: 'kabupaten.nama_kabupaten', name: 'kabupaten.nama_kabupaten' },
+                { 
+                    data: 'description', 
+                    name: 'description',
+                    render: function(data) {
+                        return data.length > 100 ? data.substr(0, 100) + '...' : data;
+                    }
+                },
+                { 
+                    data: 'action', 
+                    name: 'action', 
+                    orderable: false, 
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return `
+                            <div class="btn-group" role="group">
+                                <a href="/kuliner/${row.id}/edit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+            language: {
+                processing: "Memproses...",
+                lengthMenu: "Tampilkan _MENU_ data",
+                zeroRecords: "Data tidak ditemukan",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                infoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+                search: "Cari:",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Selanjutnya",
+                    previous: "Sebelumnya"
+                }
+            }
         });
 
         // Hapus data dengan AJAX
@@ -78,28 +127,29 @@
                 text: "Data yang dihapus tidak dapat dikembalikan!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Hapus',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '{{ url('kuliner') }}/' + id,
                         method: 'DELETE',
                         data: {
-                            _token: '{{ csrf_token() }}',  // Pastikan untuk mengirim token CSRF
+                            _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            table.ajax.reload(); // Reload DataTable setelah penghapusan
+                            table.ajax.reload();
                             Swal.fire(
-                                'Dihapus!',
-                                response.message,
+                                'Terhapus!',
+                                'Data kuliner berhasil dihapus.',
                                 'success'
                             );
                         },
-                        error: function() {
+                        error: function(xhr) {
                             Swal.fire(
-                                'Gagal!',
+                                'Error!',
                                 'Terjadi kesalahan saat menghapus data.',
                                 'error'
                             );

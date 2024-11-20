@@ -1,6 +1,6 @@
 @extends('index')
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   
     crossorigin="anonymous">
 </head>
 @section('content')
@@ -12,12 +12,12 @@
                         <div class="col-md-12">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                                <li class="breadcrumb-item active">Kabupaten</li>
+                                <li class="breadcrumb-item active">Kos</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Kabupaten</h2>
+                                <h2 class="mb-0">Kos</h2>
                             </div>
                         </div>
                     </div>
@@ -26,21 +26,39 @@
             
             <!-- Tombol Tambah -->
             <div class="mb-3 d-flex justify-content-end">
-                <a href="{{ route('kabupaten.create') }}" class="btn btn-success btn-sm px-4">Tambah</a>
+                <a href="{{ route('kos.create') }}" class="btn btn-success btn-sm px-4">Tambah</a>
             </div>
 
-            <!-- Tabel Data Kabupaten -->
+            <!-- Tabel Data Kos -->
             <div class="card">
                 <div class="card-body">
-                    <table id="kabupatenTable" class="table table-bordered dt-responsive nowrap" style="width:100%">
+                    <table id="kosTable" class="table table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Nama Kabupaten</th>
+                                <th>Foto</th>
+                                <th>Nama Kos</th>
+                                <th>Deskripsi</th>
+                                <th>Tipe</th>
                                 <th width="50px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Data akan dimuat di sini menggunakan DataTables -->
+                            @foreach($kos as $k)
+                            <tr>
+                                <td>
+                                    <img src="{{ asset('uploads/kos/'.$k->foto) }}" width="100">
+                                </td>
+                                <td>{{ $k->nm_kos }}</td>
+                                <td>{!! $k->description !!}</td>
+                                <td>{{ $k->tipe }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ route('kos.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="{{ $k->id }}">Hapus</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -56,18 +74,10 @@
 <script>
     $(document).ready(function() {
         // Inisialisasi DataTable
-        var table = $('#kabupatenTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ route('kabupaten.getData') }}',  // Mengambil data dari server
-            columns: [
-                { data: 'nama_kabupaten', name: 'nama_kabupaten' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
-        });
+        var table = $('#kosTable').DataTable();
 
         // Hapus data dengan AJAX
-        $('#kabupatenTable').on('click', '.delete-btn', function() {
+        $('.delete-btn').on('click', function() {
             var id = $(this).data('id');
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -80,13 +90,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('kabupaten') }}/' + id,
+                        url: '{{ url('kos') }}/' + id,
                         method: 'DELETE',
                         data: {
-                            _token: '{{ csrf_token() }}',  // Pastikan untuk mengirim token CSRF
+                            _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
-                            table.ajax.reload(); // Reload DataTable setelah penghapusan
+                            location.reload();
                             Swal.fire(
                                 'Dihapus!',
                                 response.message,

@@ -11,7 +11,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                                 <li class="breadcrumb-item active">Event</li>
                             </ul>
                         </div>
@@ -36,8 +36,11 @@
                         <thead>
                             <tr>
                                 <th>Foto</th>
-                                <th>Event</th>
-                                <th>Kabupaten</th>
+                                <th>Nama Event</th>
+                                <th>Tanggal</th>
+                                <th>Waktu</th>
+                                <th>Lokasi</th>
+                                <th>Deskripsi</th>
                                 <th width="50px">Action</th>
                             </tr>
                         </thead>
@@ -64,9 +67,20 @@
             scrollX: true,
             ajax: '{{ route('event.getData') }}',  // Mengambil data dari server
             columns: [
-                { data: 'foto', name: 'foto', orderable: false, searchable: false },
+                { 
+                    data: 'foto', 
+                    name: 'foto', 
+                    orderable: false, 
+                    searchable: false,
+                    render: function(data) {
+                        return `<img src="${data}" alt="Foto Event" style="max-width: 100px;">`;
+                    }
+                },
                 { data: 'nm_event', name: 'nm_event' },
-                { data: 'nama_kabupaten', name: 'nama_kabupaten' },
+                { data: 'description', name: 'description' },
+                { data: 'tanggal', name: 'tanggal' },
+                { data: 'waktu', name: 'waktu' },
+                { data: 'lokasi', name: 'lokasi' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

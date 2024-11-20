@@ -8,31 +8,34 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                                 <li class="breadcrumb-item"><a href="{{ route('kuliner.index') }}">Kuliner</a></li>
                                 <li class="breadcrumb-item active">Tambah Kuliner</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Tambah Kuliner</h2>
+                                <h2 class="mb-0">Tambah Data Kuliner</h2>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <form id="kulinerForm">
+            <form id="kulinerForm" method="POST" action="{{ route('kuliner.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="foto">Foto</label>
+                                    <label for="foto">Foto Kuliner</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control" id="foto" name="foto" required>
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" required>
+                                    @error('foto')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -43,7 +46,10 @@
                                     <label for="nm_kuliner">Nama Kuliner</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="nm_kuliner" name="nm_kuliner" required>
+                                    <input type="text" class="form-control @error('nm_kuliner') is-invalid @enderror" id="nm_kuliner" name="nm_kuliner" value="{{ old('nm_kuliner') }}" required>
+                                    @error('nm_kuliner')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -55,29 +61,16 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div id="description-editor"></div>
-                                    <textarea name="description" id="description" style="display: none;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="kabupaten_id">Kabupaten</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select">
-                                        <option value="">Select Kabupaten</option>
-                                        @foreach($kabupatens as $kabupaten)
-                                            <option value="{{ $kabupaten->id }}">{{ $kabupaten->nama_kabupaten }}</option>
-                                        @endforeach
-                                    </select>
+                                    <textarea name="description" id="description" style="display: none;">{{ old('description') }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                     </div>                    
                 </div>
-                <button type="button" class="btn btn-primary btn-sm px-4" id="saveKulinerButton">Simpan</button>
+                <button type="submit" class="btn btn-primary btn-sm px-4">Simpan</button>
                 <a href="{{ route('kuliner.index') }}" class="btn btn-secondary btn-sm px-4">Kembali</a>
             </form>
         </div>
@@ -97,13 +90,13 @@
         });
 
         // Sync Quill content to the textarea before form submit
-        $('#saveKulinerButton').click(function() {
+        $('#kulinerForm').on('submit', function(e) {
+            e.preventDefault();
             $('#description').val(quill.root.innerHTML);
-            var formData = new FormData($('#kulinerForm')[0]);
-            formData.append('description', $('#description').val());
+            var formData = new FormData(this);
 
             $.ajax({
-                url: '{{ route('kuliner.store') }}',
+                url: $(this).attr('action'),
                 method: 'POST',
                 data: formData,
                 processData: false,

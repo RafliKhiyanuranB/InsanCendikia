@@ -8,14 +8,14 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
                                 <li class="breadcrumb-item"><a href="{{ route('kuliner.index') }}">Kuliner</a></li>
                                 <li class="breadcrumb-item active">Edit Kuliner</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">Edit Kuliner</h2>
+                                <h2 class="mb-0">Edit Data Kuliner</h2>
                             </div>
                         </div>
                     </div>
@@ -24,19 +24,22 @@
 
             <form id="kulinerForm" method="POST" action="{{ route('kuliner.update', $kuliner->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('POST')
+                @method('PUT')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="foto">Foto</label>
+                                    <label for="foto">Foto Kuliner</label>
                                 </div>
                                 <div class="col-md-10">
                                     @if ($kuliner->foto)
                                         <img src="{{ asset('storage/' . $kuliner->foto) }}" alt="Foto Kuliner" class="mt-2 img-thumbnail" width="100">
                                     @endif
-                                    <input type="file" class="form-control" id="foto" name="foto">
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
+                                    @error('foto')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -47,7 +50,10 @@
                                     <label for="nm_kuliner">Nama Kuliner</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="nm_kuliner" name="nm_kuliner" value="{{ old('nm_kuliner', $kuliner->nm_kuliner) }}" required>
+                                    <input type="text" class="form-control @error('nm_kuliner') is-invalid @enderror" id="nm_kuliner" name="nm_kuliner" value="{{ old('nm_kuliner', $kuliner->nm_kuliner) }}" required>
+                                    @error('nm_kuliner')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -60,6 +66,9 @@
                                 <div class="col-md-10">
                                     <div id="description-editor">{!! old('description', $kuliner->description) !!}</div>
                                     <textarea name="description" id="description" style="display: none;">{{ old('description', $kuliner->description) }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -70,14 +79,17 @@
                                     <label for="kabupaten_id">Kabupaten</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select" required>
-                                        <option value="">Select Kabupaten</option>
+                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select @error('kabupaten_id') is-invalid @enderror" required>
+                                        <option value="">Pilih Kabupaten</option>
                                         @foreach($kabupatens as $kabupaten)
                                             <option value="{{ $kabupaten->id }}" {{ old('kabupaten_id', $kuliner->kabupaten_id) == $kabupaten->id ? 'selected' : '' }}>
                                                 {{ $kabupaten->nama_kabupaten }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('kabupaten_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
