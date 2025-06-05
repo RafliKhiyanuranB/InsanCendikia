@@ -24,7 +24,7 @@
 
             <form id="kulinerForm" method="POST" action="{{ route('kuliner.update', $kuliner->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
@@ -67,27 +67,6 @@
                                     <div id="description-editor">{!! old('description', $kuliner->description) !!}</div>
                                     <textarea name="description" id="description" style="display: none;">{{ old('description', $kuliner->description) }}</textarea>
                                     @error('description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="kabupaten_id">Kabupaten</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select name="kabupaten_id" id="kabupaten_id" class="form-select @error('kabupaten_id') is-invalid @enderror" required>
-                                        <option value="">Pilih Kabupaten</option>
-                                        @foreach($kabupatens as $kabupaten)
-                                            <option value="{{ $kabupaten->id }}" {{ old('kabupaten_id', $kuliner->kabupaten_id) == $kabupaten->id ? 'selected' : '' }}>
-                                                {{ $kabupaten->nama_kabupaten }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('kabupaten_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

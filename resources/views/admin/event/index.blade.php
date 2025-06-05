@@ -73,7 +73,7 @@
                     orderable: false, 
                     searchable: false,
                     render: function(data) {
-                        return `<img src="${data}" alt="Foto Event" style="max-width: 100px;">`;
+                        return `<img src="${data}" alt="Foto Event" style="max-width: 50px;">`;
                     }
                 },
                 { data: 'nm_event', name: 'nm_event' },

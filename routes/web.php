@@ -29,12 +29,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('index');
 // });
 
-Route::get('/front', [FrontController::class, 'index'])->name('front.index');
+Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/front/detail', [FrontController::class, 'detailView'])->name('front.detail');
 
 Route::get('/detail/{tipe}/{id}', [FrontController::class, 'detailShow'])->name('detail.show');
 
-Route::get('/', [LoginController::class, 'loginForm'])->name('login');
+Route::get('/detail/infokos', [FrontController::class, 'infoKos'])->name('detail.infokos');
+Route::get('/detail/kuliner', [FrontController::class, 'kuliner'])->name('detail.kuliner');
+Route::get('/detail/event', [FrontController::class, 'event'])->name('detail.event');
+Route::get('/detail/info', [FrontController::class, 'info'])->name('detail.info');
+
+
+Route::get('/login/form', [LoginController::class, 'loginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 
 Route::post('/logout', function () {
@@ -48,7 +54,7 @@ Route::middleware('auth')->group(function () {
     
     // Info
     Route::get('/admin/info/index', [InfoController::class, 'index'])->name('info.index');
-    Route::get('/admin/info/data', [InfoController::class, 'getInfoData'])->name('info.getData');
+    Route::get('/admin/info/data', [InfoController::class, 'getData'])->name('info.getData');
     Route::get('/admin/info/create', [InfoController::class, 'create'])->name('info.create');
     Route::get('/admin/info/{id}/edit', [InfoController::class, 'edit'])->name('info.edit');
     Route::post('admin/info', [InfoController::class, 'store'])->name('info.store');
@@ -57,7 +63,7 @@ Route::middleware('auth')->group(function () {
 
     // Kuliner
     Route::get('/admin/kuliner/index', [KulinerController::class, 'index'])->name('kuliner.index');
-    Route::get('/admin/kuliner/data', [KulinerController::class, 'getKulinerData'])->name('kuliner.getData');
+    Route::get('/admin/kuliner/data', [KulinerController::class, 'getData'])->name('kuliner.getData');
     Route::get('/admin/kuliner/create', [KulinerController::class, 'create'])->name('kuliner.create');
     Route::get('/admin/kuliner/{id}/edit', [KulinerController::class, 'edit'])->name('kuliner.edit');
     Route::post('admin/kuliner', [KulinerController::class, 'store'])->name('kuliner.store');

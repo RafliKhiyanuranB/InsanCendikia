@@ -10,6 +10,6 @@ class Info extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nm_info', 'foto', 'description', 'tipe'
+        'judul', 'foto', 'description', 'tipe', 'tanggal'
     ];
 }

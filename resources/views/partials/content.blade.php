@@ -29,8 +29,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h4>Welcome Back</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, perspiciatis ipsam reiciendis eligendi incidunt vero nulla blanditiis illo unde quia quod quo, enim soluta. Culpa sunt harum aliquam blanditiis porro!</p>
-                        <a href="" class="btn btn-primary rounded btn-sm px-4">Lets Explore</a>
+                        <p>Ayo buat data baru untuk melengkapi website kamu dengan pilih menu di sebelah kiri. Jika kamu mau melihat tampilan depan klik tombol dibawah ini</p>
+                        <a href="{{ route('front.index') }}" class="btn btn-primary rounded btn-sm px-4">Lets Explore</a>
                     </div>
                 </div>
             </div>

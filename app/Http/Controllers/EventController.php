@@ -30,7 +30,7 @@ class EventController extends Controller
 
         return datatables()->of($events)
             ->addColumn('foto', function($event) {
-                return asset('uploads/event/' . $event->foto);
+                return asset('storage/' . $event->foto);
             })
             ->addColumn('action', function($event) {
                 $editUrl = route('event.edit', $event->id);
@@ -71,10 +71,15 @@ class EventController extends Controller
         ]);
 
         try {
-            // Proses upload foto
-            $fotoPath = $request->file('foto')->store('event-photos', 'public');
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $fotoPath = $request->file('foto')->store('uploads/event', 'public');
+            } else {
+                return response()->json([
+                    'message' => 'Foto tidak valid atau tidak ada file yang dikirimkan'
+                ], 400);
+            }    
             
-            Event::create([
+            $eventCreate = Event::create([
                 'foto' => $fotoPath,
                 'nm_event' => $validated['nm_event'],
                 'tanggal' => $validated['tanggal'],
@@ -82,6 +87,7 @@ class EventController extends Controller
                 'lokasi' => $validated['lokasi'],
                 'description' => $validated['description']
             ]);
+            // dd($eventCreate);
 
             return response()->json([
                 'message' => 'Event berhasil ditambahkan'
@@ -128,30 +134,27 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nm_event' => 'required',
-            'foto' => 'nullable|image',
-            'description' => 'required',
+            'nm_event' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|string',
             'tanggal' => 'required|date',
             'waktu' => 'required',
-            'lokasi' => 'required'
+            'lokasi' => 'required|string',
         ]);
 
         $event = Event::findOrFail($id);
 
         if ($request->hasFile('foto')) {
-            // Delete old image
             if ($event->foto) {
-                $oldPath = public_path('uploads/event/' . $event->foto);
+                $oldPath = storage_path('app/public/' . $event->foto);
                 if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
             }
 
-            // Upload new image
-            $foto = $request->file('foto');
-            $filename = time() . '.' . $foto->getClientOriginalExtension();
-            $foto->move(public_path('uploads/event'), $filename);
-            $validated['foto'] = $filename;
+            $fotoPath = $request->file('foto')->store('uploads/event', 'public');
+
+            $validated['foto'] = $fotoPath;
         }
 
         $event->update($validated);
@@ -174,7 +177,7 @@ class EventController extends Controller
         
         // Delete image file
         if ($event->foto) {
-            $path = public_path('uploads/event/' . $event->foto);
+            $path = storage_path('app/public/' . $event->foto);
             if (file_exists($path)) {
                 unlink($path);
             }

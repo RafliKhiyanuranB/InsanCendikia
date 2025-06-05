@@ -10,6 +10,6 @@ class Kos extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nm_kos', 'foto', 'description', 'tipe'
+        'nm_kos', 'foto_kos', 'deskripsi_kos', 'tipe_kos'
     ];
 }

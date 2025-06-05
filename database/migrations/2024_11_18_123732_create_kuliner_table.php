@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nm_kuliner');
             $table->string('foto');
             $table->text('description');
-            
+            $table->string('tipe')->default('kuliner');
             $table->timestamps();
         });
     }

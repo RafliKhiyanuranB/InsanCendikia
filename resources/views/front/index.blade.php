@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>GuestMadura</title>
+  <title>utmzone</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
   <style>
-    body {
+    html, body {
         font-family: 'Poppins', sans-serif;
         background-color: #f9f9f9; /* Background terang */
     }
@@ -93,12 +93,6 @@
 <body>
   @include('front.navbar')
   <div class="container is-widescreen mt-3">
-    <nav class="breadcrumb has-dot-separator" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="#" class="">GuestMadura</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Bangkalan</a></li>
-        </ul>
-    </nav>
 
     <!-- Carousel Section -->
     <section>
@@ -126,7 +120,7 @@
     <section class="section">
       <div class="columns is-multiline">
         <!-- Pariwisata Section -->
-        @forelse($pariwisata as $item)
+        @forelse($event as $item)
           <div class="column is-one-third">
             <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
               <div class="card">
@@ -139,15 +133,16 @@
                   </span>
                 </div>
                 <div class="card-content">
-                  <p class="title is-5 has-text-dark">{{ $item->nm_pariwisata }}</p>
-                  <p class="subtitle is-6 has-text-dark">{{ $item->kabupatens->nama_kabupaten }}</p>
-                  <p class="is-size-7 has-text-grey">{{ $item->tipe }}</p>
+                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
+                  <p class="title is-5 has-text-dark">{{ $item->nm_event }}</p>
+                  <p class="subtitle is-6 has-text-dark">{{ $item->tanggal }}</p>
+                  <p class="is-size-7 has-text-grey">{{ $item->lokasi }}</p>
                 </div>
               </div>
             </a>
           </div>
         @empty
-          <p class="column is-full has-text-centered">Tidak ada data Pariwisata</p>
+          <p class="column is-full has-text-centered">Tidak ada data Event</p>
         @endforelse
     
         <!-- Kuliner Section -->
@@ -164,9 +159,9 @@
                   </span>
                 </div>
                 <div class="card-content">
+                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
                   <p class="title is-5 has-text-dark">{{ $item->nm_kuliner }}</p>
-                  <p class="subtitle is-6 has-text-dark">{{ $item->kabupatens->nama_kabupaten }}</p>
-                  <p class="is-size-7 has-text-grey">{{ $item->tipe }}</p>
+                  <p class="subtitle is-6 has-text-dark">{!! Str::limit($item->description, 150, '...') !!}</p>
                 </div>
               </div>
             </a>
@@ -176,7 +171,7 @@
         @endforelse
     
         <!-- Berita Terkini Section -->
-        @forelse($beritaterkini as $item)
+        @forelse($info as $item)
           <div class="column is-one-third">
             <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
               <div class="card">
@@ -189,40 +184,40 @@
                   </span>
                 </div>
                 <div class="card-content">
-                  <p class="title is-5 has-text-dark ellipsis">{{ $item->nm_berita }}</p>
-                  <p class="subtitle is-6 has-text-success">Published on {{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}</p>
-                  <p class="is-size-7 has-text-grey">{{ $item->tipe }}</p>
+                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
+                  <p class="title is-5 has-text-dark ellipsis">{{ $item->judul }}</p>
+                  <p class="subtitle is-6">{{ $item->tanggal }}</p>
                 </div>
               </div>
             </a>
           </div>
         @empty
-          <p class="column is-full has-text-centered">Tidak ada data Berita Terkini</p>
+          <p class="column is-full has-text-centered">Tidak ada data Info Kos</p>
         @endforelse
     
         <!-- Event Section -->
-        @forelse($event as $item)
+        @forelse($kos as $item)
           <div class="column is-one-third">
             <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
               <div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="{{ asset('storage/' . $item->foto) }}">
+                    <img src="{{ asset('storage/' . $item->foto_kos) }}">
                   </figure>
                   <span class="icon has-text-primary is-pulled-right mt-2 mr-2">
                     <i class="fas fa-heart"></i>
                   </span>
                 </div>
                 <div class="card-content">
-                  <p class="title is-5 has-text-dark ellipsis">{{ $item->nm_event }}</p>
-                  <p class="subtitle is-6 has-text-dark">{{ $item->kabupatens->nama_kabupaten }}</p>
-                  <p class="is-size-7 has-text-grey">{{ $item->tipe }}</p>
+                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
+                  <p class="title is-5 has-text-dark ellipsis">{{ $item->nm_kos }}</p>
+                  <p class="has-text-dark">{!! Str::limit($item->deskripsi_kos, 150, '...') !!}</p>
                 </div>
               </div>
             </a>
           </div>
         @empty
-          <p class="column is-full has-text-centered">Tidak ada data Event</p>
+          <p class="column is-full has-text-centered">Tidak ada data Info Kos</p>
         @endforelse
       </div>
     </section>       

@@ -46,16 +46,14 @@
                             @foreach($kos as $k)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('uploads/kos/'.$k->foto) }}" width="100">
+                                    <img src="{{ asset('storage/' . $k->foto_kos) }}" width="100">
                                 </td>
                                 <td>{{ $k->nm_kos }}</td>
-                                <td>{!! $k->description !!}</td>
-                                <td>{{ $k->tipe }}</td>
+                                <td>{!! $k->deskripsi_kos !!}</td>
+                                <td>{{ $k->tipe_kos }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('kos.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="{{ $k->id }}">Hapus</button>
-                                    </div>
+                                    <a href="{{ route('kos.edit', $k->id) }}" class="btn btn-sm btn-warning px-4">Edit</a>
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn px-4" data-id="{{ $k->id }}">Hapus</button>
                                 </td>
                             </tr>
                             @endforeach

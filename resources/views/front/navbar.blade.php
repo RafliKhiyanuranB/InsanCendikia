@@ -1,6 +1,6 @@
 <nav class="navbar is-light has-text-weight-semibold" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item is-size-3" href="#">GuestMadura</a>
+      <a class="navbar-item is-size-3 has-text-success" href="{{ route('front.index') }}">UTM ZONE</a>
     </div>
     <div class="navbar-menu">
       <div class="navbar-start">
@@ -15,20 +15,20 @@
       </div>
       <div class="navbar-end">
           <div class="navbar-item">
-              <a href="" class="has-text-black">Pariwisata</a>
+              <a href="{{ route('detail.infokos') }}" class="has-text-black">Info Kos</a>
           </div>
           <div class="navbar-item">
-              <a href="" class="has-text-black">Berita Terkini</a>
+              <a href="{{ route('detail.kuliner') }}" class="has-text-black">Kuliner</a>
           </div>
           <div class="navbar-item">
-              <a href="" class="has-text-black">Event</a>
+              <a href="{{ route('detail.event') }}" class="has-text-black">Event</a>
           </div>
           <div class="navbar-item">
-              <a href="" class="has-text-black">Kuliner</a>
+              <a href="{{ route('detail.info') }}" class="has-text-black">Info</a>
           </div>
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-black is-rounded">Masuk</a>
+            <a class="button is-success is-rounded" href="{{ route('login') }}">Masuk</a>
           </div>
         </div>
       </div>

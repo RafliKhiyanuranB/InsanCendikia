@@ -24,7 +24,7 @@
 
             <form id="infoForm" method="POST" action="{{ route('info.update', $info->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">

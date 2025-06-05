@@ -65,8 +65,17 @@
             scrollX: true,
             ajax: '{{ route('info.getData') }}',  // Mengambil data dari server
             columns: [
-                { data: 'versi_info', name: 'versi_info' },
-                { data: 'nm_info', name: 'nm_info' },
+                { 
+                    data: 'foto', 
+                    name: 'foto', 
+                    orderable: false, 
+                    searchable: false,
+                    render: function(data) {
+                        return `<img src="${data}" alt="Foto Event" style="max-width: 50px;">`;
+                    }
+                },
+                { data: 'judul', name: 'judul' },
+                { data: 'tanggal', name: 'tanggal' },
                 { data: 'description', name: 'description' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]

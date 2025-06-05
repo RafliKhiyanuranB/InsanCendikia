@@ -24,7 +24,7 @@
 
             <form id="eventForm" method="POST" action="{{ route('event.update', $event->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">

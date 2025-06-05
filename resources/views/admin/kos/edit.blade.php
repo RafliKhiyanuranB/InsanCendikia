@@ -24,7 +24,7 @@
 
             <form id="kosForm" method="POST" action="{{ route('kos.update', $kos->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
@@ -33,11 +33,11 @@
                                     <label for="foto">Foto Kos</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control" id="foto" name="foto">
-                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto kos.</small>
-                                    @if($kos->foto)
-                                        <img src="{{ asset('storage/'.$kos->foto) }}" alt="Foto Kos" class="mt-2" style="max-width: 200px">
+                                    @if($kos->foto_kos)
+                                        <img src="{{ asset('storage/'.$kos->foto_kos) }}" alt="Foto Kos" class="mt-2 img-thumbnail" style="max-width: 100px">
                                     @endif
+                                    <input type="file" class="form-control" id="foto" name="foto_kos">
+                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto kos.</small>
                                 </div>
                             </div>
                         </div>
@@ -55,81 +55,36 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="alamat">Alamat Kos</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat', $kos->alamat) }}" required>
-                                    @error('alamat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="harga">Harga Sewa</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input type="number" class="form-control @error('harga') is-invalid @enderror" id="harga" name="harga" value="{{ old('harga', $kos->harga) }}" required>
-                                    @error('harga')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                         
-                        <div class="form-group" style="margin-bottom: 8%">
+                        <div class="form-group mt-3">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="description">Deskripsi</label>
+                                    <label for="tipe_kos">Tipe Kos</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor"></div>
-                                    <textarea name="description" id="description" style="display: none;">{{ old('description', $kos->description) }}</textarea>
-                                    @error('description')
+                                    <select name="tipe_kos" id="tipe_kos" class="form-select" required>
+                                        <option value="">Pilih Tipe</option>
+                                        <option value="Putra" {{ $kos->tipe_kos == 'Putra' ? 'selected' : '' }}>Putra</option>
+                                        <option value="Putri" {{ $kos->tipe_kos == 'Putri' ? 'selected' : '' }}>Putri</option>
+                                        <option value="Campur" {{ $kos->tipe_kos == 'Campur' ? 'selected' : '' }}>Campur</option>
+                                    </select>
+                                    @error('tipe_kos')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="form-group mt-3">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="kategori_id">Kategori</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
-                                        <option value="">Pilih Kategori</option>
-                                        @foreach($kategoris as $kategori)
-                                            <option value="{{ $kategori->id }}" {{ old('kategori_id', $kos->kategori_id) == $kategori->id ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('kategori_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group mt-3">
+                        <div class="form-group mt-3" style="margin-bottom: 8%">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="status">Status</label>
+                                    <label for="deskripsi_kos">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
-                                        <option value="tersedia" {{ old('status', $kos->status) == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                        <option value="tidak_tersedia" {{ old('status', $kos->status) == 'tidak_tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
-                                    </select>
-                                    @error('status')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div id="description-editor"></div>
+                                    <textarea name="deskripsi_kos" id="deskripsi_kos" style="display: none;">{{ old('deskripsi_kos', $kos->deskripsi_kos) }}</textarea>
+                                    @error('deskripsi_kos')
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -156,11 +111,11 @@
         });
 
         // Set existing content
-        quill.root.innerHTML = $('#description').val();
+        quill.root.innerHTML = $('#deskripsi_kos').val();
 
         $('#kosForm').on('submit', function(e) {
             e.preventDefault();
-            $('#description').val(quill.root.innerHTML);
+            $('#deskripsi_kos').val(quill.root.innerHTML);
             var formData = new FormData(this);
 
             $.ajax({

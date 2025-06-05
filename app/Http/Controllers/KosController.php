@@ -37,21 +37,23 @@ class KosController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'nm_kos' => 'required',
-            'foto' => 'required|image',
-            'description' => 'required',
-            'tipe' => 'required'
+            'foto_kos' => 'required|image|mimes:jpg,png,jpeg',
+            'deskripsi_kos' => 'required',
+            'tipe_kos' => 'required',
         ]);
 
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $filename = time() . '.' . $foto->getClientOriginalExtension();
-            $foto->move(public_path('uploads/kos'), $filename);
-            $validated['foto'] = $filename;
+        if ($request->hasFile('foto_kos')) {
+            $fotoPath = $request->file('foto_kos')->store('uploads/kos', 'public');;
         }
 
-        $kos = Kos::create($validated);
+        $kos = Kos::create([
+            'nm_kos' => $request->nm_kos,
+            'foto_kos' => $fotoPath,
+            'deskripsi_kos' => $request->deskripsi_kos,
+            'tipe_kos' => $request->tipe_kos,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -94,27 +96,24 @@ class KosController extends Controller
     {
         $validated = $request->validate([
             'nm_kos' => 'required',
-            'foto' => 'nullable|image',
-            'description' => 'required',
-            'tipe' => 'required'
+            'foto_kos' => 'nullable|image',
+            'deskripsi_kos' => 'required',
+            'tipe_kos' => 'required'
         ]);
 
         $kos = Kos::findOrFail($id);
 
-        if ($request->hasFile('foto')) {
-            // Delete old image
-            if ($kos->foto) {
-                $oldPath = public_path('uploads/kos/' . $kos->foto);
+        if ($request->hasFile('foto_kos')) {
+            if ($kos->foto_kos) {
+                $oldPath = storage_path('app/public/' . $kos->foto_kos);
                 if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
             }
 
-            // Upload new image
-            $foto = $request->file('foto');
-            $filename = time() . '.' . $foto->getClientOriginalExtension();
-            $foto->move(public_path('uploads/kos'), $filename);
-            $validated['foto'] = $filename;
+            $fotoPath = $request->file('foto')->store('uploads/kos', 'public');
+
+            $validated['foto'] = $fotoPath;
         }
 
         $kos->update($validated);
@@ -137,7 +136,7 @@ class KosController extends Controller
         
         // Delete image file
         if ($kos->foto) {
-            $path = public_path('uploads/kos/' . $kos->foto);
+            $path = storage_path('app/public/' . $kos->foto);
             if (file_exists($path)) {
                 unlink($path);
             }

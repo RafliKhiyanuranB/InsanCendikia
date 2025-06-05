@@ -29,10 +29,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="foto">Foto</label>
+                                    <label for="foto_kos">Foto</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control" id="foto" name="foto" required>
+                                    <input type="file" class="form-control" id="foto" name="foto_kos" required>
                                 </div>
                             </div>
                         </div>
@@ -51,11 +51,11 @@
                         <div class="form-group" style="margin-bottom: 8%">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="description">Deskripsi</label>
+                                    <label for="deskripsi_kos">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
                                     <div id="description-editor"></div>
-                                    <textarea name="description" id="description" style="display: none;"></textarea>
+                                    <textarea name="deskripsi_kos" id="deskripsi_kos" style="display: none;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -63,10 +63,10 @@
                         <div class="form-group mt-3">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="tipe">Tipe</label>
+                                    <label for="tipe_kos">Tipe</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select name="tipe" id="tipe" class="form-select" required>
+                                    <select name="tipe_kos" id="tipe_kos" class="form-select" required>
                                         <option value="">Pilih Tipe</option>
                                         <option value="Putra">Putra</option>
                                         <option value="Putri">Putri</option>
@@ -91,6 +91,14 @@
 
 <script>
     $(document).ready(function() {
+        var quill = new Quill('#description-editor', {
+            theme: 'snow',
+            placeholder: 'Tulis deskripsi kos disini...'
+        });
+
+        // Set existing content
+        quill.root.innerHTML = $('#deskripsi_kos').val();
+
         var table = $('#kosTable').DataTable({
             processing: true,
             serverSide: true,
@@ -107,7 +115,7 @@
         // Sync Quill content to the textarea before form submit
         $('#kosForm').on('submit', function(e) {
             e.preventDefault();
-            $('#description').val(quill.root.innerHTML);
+            $('#deskripsi_kos').val(quill.root.innerHTML);
             var formData = new FormData(this);
 
             $.ajax({

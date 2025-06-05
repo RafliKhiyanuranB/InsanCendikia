@@ -31,18 +31,21 @@ class KulinerController extends Controller
 
         return DataTables::of($kuliners)
             ->addColumn('foto', function ($kuliner) {
-                return '<img src="'.asset('storage/'.$kuliner->foto).'" alt="Foto Kuliner" width="50">';
+                return '<img src="'.asset('storage/' . $kuliner->foto).'" alt="Foto Kuliner" width="50">';
+            })
+            ->addColumn('description', function($kuliner) {
+                return '<p>' . $kuliner->description . '</p>';
             })
             ->addColumn('action', function ($kuliner) {
                 return '
-                    <a href="'.route('kuliner.edit', $kuliner->id).'" class="btn btn-primary btn-sm">
-                        <i class="fas fa-edit"></i>
+                    <a href="'.route('kuliner.edit', $kuliner->id).'" class="btn btn-warning btn-sm px-4">
+                        Edit
                     </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteKuliner('.$kuliner->id.')">
-                        <i class="fas fa-trash"></i>
+                    <button type="button" class="btn btn-danger btn-sm px-4 delete-btn"data-id="' . $kuliner->id . '">
+                        Delete
                     </button>';
             })
-            ->rawColumns(['foto', 'action'])
+            ->rawColumns(['foto', 'action', 'description'])
             ->make(true);
     }
 
@@ -138,7 +141,6 @@ class KulinerController extends Controller
     {
         $kuliner = Kuliner::findOrFail($id);
 
-        // Hapus foto dari storage
         if ($kuliner->foto) {
             Storage::disk('public')->delete($kuliner->foto);
         }

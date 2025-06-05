@@ -26,11 +26,11 @@ class InfoController extends Controller
      */
     public function getData()
     {
-        $infos = Info::select(['id', 'nm_info', 'foto', 'description']);
+        $infos = Info::select(['id', 'judul', 'tanggal', 'foto', 'description']);
 
         return datatables()->of($infos)
             ->addColumn('foto', function($info) {
-                return asset('uploads/info/' . $info->foto);
+                return asset('storage/' . $info->foto);
             })
             ->addColumn('action', function($info) {
                 $editUrl = route('info.edit', $info->id);
@@ -61,20 +61,23 @@ class InfoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nm_info' => 'required',
-            'foto' => 'required|image',
-            'description' => 'required'
+        $request->validate([
+            'judul' => 'required',
+            'foto' => 'required|image|mimes:jpg,png,jpeg',
+            'description' => 'required',
+            'tanggal' => 'required'
         ]);
 
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $filename = time() . '.' . $foto->getClientOriginalExtension();
-            $foto->move(public_path('uploads/info'), $filename);
-            $validated['foto'] = $filename;
+            $fotoPath = $request->file('foto')->store('uploads/info', 'public');;
         }
 
-        $info = Info::create($validated);
+        Info::create([
+            'judul' => $request->judul,
+            'foto' => $fotoPath,
+            'description' => $request->description,
+            'tanggal' => $request->tanggal,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -116,27 +119,25 @@ class InfoController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nm_info' => 'required',
-            'foto' => 'nullable|image',
-            'description' => 'required'
+            'judul' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg',
+            'description' => 'required',
+            'tanggal' => 'required'
         ]);
 
         $info = Info::findOrFail($id);
 
         if ($request->hasFile('foto')) {
-            // Delete old image
             if ($info->foto) {
-                $oldPath = public_path('uploads/info/' . $info->foto);
+                $oldPath = storage_path('app/public/' . $info->foto);
                 if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
             }
 
-            // Upload new image
-            $foto = $request->file('foto');
-            $filename = time() . '.' . $foto->getClientOriginalExtension();
-            $foto->move(public_path('uploads/info'), $filename);
-            $validated['foto'] = $filename;
+            $fotoPath = $request->file('foto')->store('uploads/info', 'public');
+
+            $validated['foto'] = $fotoPath;
         }
 
         $info->update($validated);
@@ -159,7 +160,7 @@ class InfoController extends Controller
         
         // Delete image file
         if ($info->foto) {
-            $path = public_path('uploads/info/' . $info->foto);
+            $path = storage_path('app/public/' . $info->foto);
             if (file_exists($path)) {
                 unlink($path);
             }

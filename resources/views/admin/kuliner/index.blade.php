@@ -70,53 +70,11 @@
                     name: 'foto',
                     orderable: false,
                     searchable: false,
-                    render: function(data) {
-                        return `<img src="${data}" alt="Foto Kuliner" class="img-thumbnail" width="100">`;
-                    }
                 },
                 { data: 'nm_kuliner', name: 'nm_kuliner' },
-                { data: 'kabupaten.nama_kabupaten', name: 'kabupaten.nama_kabupaten' },
-                { 
-                    data: 'description', 
-                    name: 'description',
-                    render: function(data) {
-                        return data.length > 100 ? data.substr(0, 100) + '...' : data;
-                    }
-                },
-                { 
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false,
-                    render: function(data, type, row) {
-                        return `
-                            <div class="btn-group" role="group">
-                                <a href="/kuliner/${row.id}/edit" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        `;
-                    }
-                }
-            ],
-            language: {
-                processing: "Memproses...",
-                lengthMenu: "Tampilkan _MENU_ data",
-                zeroRecords: "Data tidak ditemukan",
-                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                infoFiltered: "(disaring dari _MAX_ data keseluruhan)",
-                search: "Cari:",
-                paginate: {
-                    first: "Pertama",
-                    last: "Terakhir",
-                    next: "Selanjutnya",
-                    previous: "Sebelumnya"
-                }
-            }
+                { data: 'description', name: 'description'},
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
         });
 
         // Hapus data dengan AJAX
