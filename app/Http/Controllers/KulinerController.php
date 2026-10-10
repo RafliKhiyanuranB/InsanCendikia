@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kuliner;
+use App\Services\ImageCompressorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -69,12 +70,12 @@ class KulinerController extends Controller
     {
         $validated = $request->validate([
             'nm_kuliner' => 'required|string|max:255',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
             'description' => 'required|string'
         ]);
 
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('kuliner', 'public');
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'kuliner', 'public');
             $validated['foto'] = $fotoPath;
         }
 
@@ -110,7 +111,7 @@ class KulinerController extends Controller
 
         $validated = $request->validate([
             'nm_kuliner' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'description' => 'required|string'
         ]);
 
@@ -120,7 +121,7 @@ class KulinerController extends Controller
                 Storage::disk('public')->delete($kuliner->foto);
             }
             
-            $fotoPath = $request->file('foto')->store('kuliner', 'public');
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'kuliner', 'public');
             $validated['foto'] = $fotoPath;
         }
 

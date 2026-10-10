@@ -36,7 +36,8 @@
                                     @if ($kuliner->foto)
                                         <img src="{{ asset('storage/' . $kuliner->foto) }}" alt="Foto Kuliner" class="mt-2 img-thumbnail" width="100">
                                     @endif
-                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*">
+                                    <small class="form-text text-muted d-block">Biarkan kosong jika tidak ingin mengubah foto. <span class="text-success"><i class="fa fa-compress me-1"></i>Auto photo compress aktif</span></small>
                                     @error('foto')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

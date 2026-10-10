@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kos;
+use App\Services\ImageCompressorService;
 use Illuminate\Http\Request;
 
 class KosController extends Controller
@@ -39,13 +40,13 @@ class KosController extends Controller
     {
         $request->validate([
             'nm_kos' => 'required',
-            'foto_kos' => 'required|image|mimes:jpg,png,jpeg',
+            'foto_kos' => 'required|image|mimes:jpg,png,jpeg,webp|max:10240',
             'deskripsi_kos' => 'required',
             'tipe_kos' => 'required',
         ]);
 
         if ($request->hasFile('foto_kos')) {
-            $fotoPath = $request->file('foto_kos')->store('uploads/kos', 'public');;
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto_kos'), 'uploads/kos', 'public');
         }
 
         $kos = Kos::create([
@@ -96,7 +97,7 @@ class KosController extends Controller
     {
         $validated = $request->validate([
             'nm_kos' => 'required',
-            'foto_kos' => 'nullable|image',
+            'foto_kos' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:10240',
             'deskripsi_kos' => 'required',
             'tipe_kos' => 'required'
         ]);
@@ -111,9 +112,9 @@ class KosController extends Controller
                 }
             }
 
-            $fotoPath = $request->file('foto')->store('uploads/kos', 'public');
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto_kos'), 'uploads/kos', 'public');
 
-            $validated['foto'] = $fotoPath;
+            $validated['foto_kos'] = $fotoPath;
         }
 
         $kos->update($validated);
@@ -135,8 +136,8 @@ class KosController extends Controller
         $kos = Kos::findOrFail($id);
         
         // Delete image file
-        if ($kos->foto) {
-            $path = storage_path('app/public/' . $kos->foto);
+        if ($kos->foto_kos) {
+            $path = storage_path('app/public/' . $kos->foto_kos);
             if (file_exists($path)) {
                 unlink($path);
             }

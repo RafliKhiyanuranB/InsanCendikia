@@ -32,7 +32,8 @@
                                     <label for="foto">Foto Kuliner</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" required>
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*" required>
+                                    <small class="form-text text-muted"><i class="fa fa-compress text-success me-1"></i>Auto photo compress aktif (otomatis dioptimalkan saat upload).</small>
                                     @error('foto')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

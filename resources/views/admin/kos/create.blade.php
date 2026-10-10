@@ -32,7 +32,8 @@
                                     <label for="foto_kos">Foto</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control" id="foto" name="foto_kos" required>
+                                    <input type="file" class="form-control" id="foto" name="foto_kos" accept="image/*" required>
+                                    <small class="form-text text-muted"><i class="fa fa-compress text-success me-1"></i>Auto photo compress aktif (otomatis dioptimalkan saat upload).</small>
                                 </div>
                             </div>
                         </div>

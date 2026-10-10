@@ -31,7 +31,7 @@
         <div class="row">
           <div class="col my-1">
             <p class="m-0"
-              >Copyright <i class="fa-regular fa-copyright"></i> 2024</p
+              >Copyright <i class="fa-regular fa-copyright"></i> 2024 InsanCendikia</p
             >
           </div>
           <div class="col-auto my-1">
@@ -58,6 +58,9 @@
     <!-- Script DataTables JS -->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Auto Photo Compressor JS -->
+    <script src="{{ asset('/js/photo-compressor.js') }}"></script>
 
 
     

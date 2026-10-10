@@ -30,7 +30,7 @@
 <footer class="footer-custom">
     <div>
       <img src="https://cdn-icons-png.flaticon.com/512/124/124022.png" alt="Logo" width="20" height="20">
-      <span>© 2024 GuestMadura.</span>
+      <span>© 2024 InsanCendikia.</span>
     </div>
     <div>
       <a href="#">Peta Madura</a>

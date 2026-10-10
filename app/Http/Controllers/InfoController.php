@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Info;
+use App\Services\ImageCompressorService;
 use Illuminate\Http\Request;
 
 class InfoController extends Controller
@@ -63,13 +64,13 @@ class InfoController extends Controller
     {
         $request->validate([
             'judul' => 'required',
-            'foto' => 'required|image|mimes:jpg,png,jpeg',
+            'foto' => 'required|image|mimes:jpg,png,jpeg,webp|max:10240',
             'description' => 'required',
             'tanggal' => 'required'
         ]);
 
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('uploads/info', 'public');;
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'uploads/info', 'public');
         }
 
         Info::create([
@@ -120,7 +121,7 @@ class InfoController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:10240',
             'description' => 'required',
             'tanggal' => 'required'
         ]);
@@ -135,7 +136,7 @@ class InfoController extends Controller
                 }
             }
 
-            $fotoPath = $request->file('foto')->store('uploads/info', 'public');
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'uploads/info', 'public');
 
             $validated['foto'] = $fotoPath;
         }

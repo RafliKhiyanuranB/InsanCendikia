@@ -33,8 +33,8 @@
                                     <label for="foto">Foto Event</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
-                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto</small>
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*">
+                                    <small class="text-muted d-block">Biarkan kosong jika tidak ingin mengubah foto. <span class="text-success"><i class="fa fa-compress me-1"></i>Auto photo compress aktif</span></small>
                                     @if($event->foto)
                                         <div class="mt-2">
                                             <img src="{{ asset('storage/'.$event->foto) }}" alt="Current Event Photo" style="max-width: 200px">

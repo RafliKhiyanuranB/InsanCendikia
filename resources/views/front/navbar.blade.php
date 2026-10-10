@@ -1,6 +1,6 @@
 <nav class="navbar is-light has-text-weight-semibold" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item is-size-3 has-text-success" href="{{ route('front.index') }}">UTM ZONE</a>
+      <a class="navbar-item is-size-3 has-text-success" href="{{ route('front.index') }}">InsanCendikia</a>
     </div>
     <div class="navbar-menu">
       <div class="navbar-start">

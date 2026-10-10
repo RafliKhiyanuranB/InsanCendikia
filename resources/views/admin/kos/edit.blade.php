@@ -36,8 +36,8 @@
                                     @if($kos->foto_kos)
                                         <img src="{{ asset('storage/'.$kos->foto_kos) }}" alt="Foto Kos" class="mt-2 img-thumbnail" style="max-width: 100px">
                                     @endif
-                                    <input type="file" class="form-control" id="foto" name="foto_kos">
-                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto kos.</small>
+                                    <input type="file" class="form-control" id="foto" name="foto_kos" accept="image/*">
+                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto kos. <span class="text-success"><i class="fa fa-compress me-1"></i>Auto photo compress aktif</span></small>
                                 </div>
                             </div>
                         </div>

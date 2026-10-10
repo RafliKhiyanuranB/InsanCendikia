@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Services\ImageCompressorService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -62,7 +63,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
             'nm_event' => 'required|string|max:255',
             'tanggal' => 'required|date',
             'waktu' => 'required',
@@ -72,7 +73,7 @@ class EventController extends Controller
 
         try {
             if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-                $fotoPath = $request->file('foto')->store('uploads/event', 'public');
+                $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'uploads/event', 'public');
             } else {
                 return response()->json([
                     'message' => 'Foto tidak valid atau tidak ada file yang dikirimkan'
@@ -135,7 +136,7 @@ class EventController extends Controller
     {
         $validated = $request->validate([
             'nm_event' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:10240',
             'description' => 'required|string',
             'tanggal' => 'required|date',
             'waktu' => 'required',
@@ -152,7 +153,7 @@ class EventController extends Controller
                 }
             }
 
-            $fotoPath = $request->file('foto')->store('uploads/event', 'public');
+            $fotoPath = ImageCompressorService::compressAndStore($request->file('foto'), 'uploads/event', 'public');
 
             $validated['foto'] = $fotoPath;
         }

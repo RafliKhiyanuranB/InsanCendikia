@@ -33,8 +33,8 @@
                                     <label for="foto">Foto</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
-                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto</small>
+                                    <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*">
+                                    <small class="text-muted d-block">Biarkan kosong jika tidak ingin mengubah foto. <span class="text-success"><i class="fa fa-compress me-1"></i>Auto photo compress aktif</span></small>
                                     @error('foto')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
