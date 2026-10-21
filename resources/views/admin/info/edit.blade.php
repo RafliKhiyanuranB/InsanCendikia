@@ -35,6 +35,11 @@
                                 <div class="col-md-10">
                                     <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/*">
                                     <small class="text-muted d-block">Biarkan kosong jika tidak ingin mengubah foto. <span class="text-success"><i class="fa fa-compress me-1"></i>Auto photo compress aktif</span></small>
+                                    @if($info->foto)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $info->foto) }}" alt="Foto Info Saat Ini" style="max-width: 200px; border-radius: 4px;">
+                                        </div>
+                                    @endif
                                     @error('foto')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -76,7 +81,7 @@
                                     <label for="description">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor"></div>
+                                    <div id="description-editor" style="min-height: 250px;"></div>
                                     <textarea name="description" id="description" style="display: none;">{{ old('description', $info->description) }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>

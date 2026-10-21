@@ -65,7 +65,7 @@
                                     <label for="description">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor">{!! old('description', $kuliner->description) !!}</div>
+                                    <div id="description-editor" style="min-height: 250px;">{!! old('description', $kuliner->description) !!}</div>
                                     <textarea name="description" id="description" style="display: none;">{{ old('description', $kuliner->description) }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>

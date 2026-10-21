@@ -21,6 +21,33 @@ class KosController extends Controller
     }
 
     /**
+     * Get kos data for DataTables.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getKosData()
+    {
+        $kos = Kos::select(['id', 'foto_kos', 'nm_kos', 'deskripsi_kos', 'tipe_kos']);
+
+        return datatables()->of($kos)
+            ->editColumn('foto_kos', function($k) {
+                return '<img src="'.asset('storage/' . $k->foto_kos).'" alt="Foto Kos" width="50" style="object-fit: cover; border-radius: 4px;">';
+            })
+            ->editColumn('deskripsi_kos', function($k) {
+                $plain = strip_tags($k->deskripsi_kos);
+                return \Illuminate\Support\Str::limit($plain, 80, '...');
+            })
+            ->addColumn('action', function($k) {
+                return '
+                    <a href="'.route('kos.edit', $k->id).'" class="btn btn-sm btn-warning px-4">Edit</a>
+                    <button type="button" class="btn btn-sm btn-danger delete-btn px-4" data-id="'.$k->id.'">Hapus</button>
+                ';
+            })
+            ->rawColumns(['foto_kos', 'deskripsi_kos', 'action'])
+            ->make(true);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

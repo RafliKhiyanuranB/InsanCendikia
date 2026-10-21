@@ -71,12 +71,18 @@
                     orderable: false, 
                     searchable: false,
                     render: function(data) {
-                        return `<img src="${data}" alt="Foto Event" style="max-width: 50px;">`;
+                        return `<img src="${data}" alt="Foto Info" style="max-width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">`;
                     }
                 },
                 { data: 'judul', name: 'judul' },
                 { data: 'tanggal', name: 'tanggal' },
-                { data: 'description', name: 'description' },
+                { 
+                    data: 'description', 
+                    name: 'description',
+                    render: function(data) {
+                        return data ? data : '';
+                    }
+                },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

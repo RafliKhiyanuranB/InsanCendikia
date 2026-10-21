@@ -55,7 +55,7 @@
                                     <label for="deskripsi_kos">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor"></div>
+                                    <div id="description-editor" style="min-height: 250px;"></div>
                                     <textarea name="deskripsi_kos" id="deskripsi_kos" style="display: none;"></textarea>
                                 </div>
                             </div>

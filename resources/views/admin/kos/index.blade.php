@@ -49,7 +49,7 @@
                                     <img src="{{ asset('storage/' . $k->foto_kos) }}" width="100">
                                 </td>
                                 <td>{{ $k->nm_kos }}</td>
-                                <td>{!! $k->deskripsi_kos !!}</td>
+                                <td>{{ Str::limit(strip_tags($k->deskripsi_kos), 80, '...') }}</td>
                                 <td>{{ $k->tipe_kos }}</td>
                                 <td>
                                     <a href="{{ route('kos.edit', $k->id) }}" class="btn btn-sm btn-warning px-4">Edit</a>
@@ -75,7 +75,7 @@
         var table = $('#kosTable').DataTable();
 
         // Hapus data dengan AJAX
-        $('.delete-btn').on('click', function() {
+        $('#kosTable').on('click', '.delete-btn', function() {
             var id = $(this).data('id');
             Swal.fire({
                 title: 'Apakah Anda yakin?',

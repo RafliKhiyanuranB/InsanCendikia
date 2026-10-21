@@ -33,6 +33,10 @@ class InfoController extends Controller
             ->addColumn('foto', function($info) {
                 return asset('storage/' . $info->foto);
             })
+            ->editColumn('description', function($info) {
+                $plain = strip_tags($info->description);
+                return \Illuminate\Support\Str::limit($plain, 80, '...');
+            })
             ->addColumn('action', function($info) {
                 $editUrl = route('info.edit', $info->id);
                 return '
@@ -40,7 +44,7 @@ class InfoController extends Controller
                     <button class="btn btn-danger btn-sm delete-btn" data-id="'.$info->id.'">Hapus</button>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['foto', 'description', 'action'])
             ->make(true);
     }
 

@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
-Route::get('/front/detail', [FrontController::class, 'detailView'])->name('front.detail');
+Route::redirect('/front/detail', '/');
 
 Route::get('/detail/{tipe}/{id}', [FrontController::class, 'detailShow'])->name('detail.show');
 

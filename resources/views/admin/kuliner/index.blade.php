@@ -70,9 +70,18 @@
                     name: 'foto',
                     orderable: false,
                     searchable: false,
+                    render: function(data) {
+                        return data;
+                    }
                 },
                 { data: 'nm_kuliner', name: 'nm_kuliner' },
-                { data: 'description', name: 'description'},
+                { 
+                    data: 'description', 
+                    name: 'description',
+                    render: function(data) {
+                        return data;
+                    }
+                },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

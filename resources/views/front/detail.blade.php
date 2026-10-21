@@ -73,7 +73,7 @@
                     <h2 class="title is-4">Detail {{ ucfirst($tipe) }}</h2>
                     <div class="media">
                         <div class="media-content">
-                            <p class="has-text-weight-semibold has-text-black">
+                            <p class="title is-5 has-text-black mb-2">
                                 @if ($tipe === 'pariwisata')
                                     {{ $data->nm_pariwisata }}
                                 @elseif ($tipe === 'kuliner')
@@ -82,11 +82,39 @@
                                     {{ $data->nm_berita }}
                                 @elseif ($tipe === 'event')
                                     {{ $data->nm_event }}
+                                @elseif ($tipe === 'info')
+                                    {{ $data->judul }}
+                                @elseif ($tipe === 'kos')
+                                    {{ $data->nm_kos }}
                                 @endif
                             </p>
-                            <p class="is-size-7 has-text-grey-dark">{!! $data->description !!}</p>
-                            @if ($tipe === 'pariwisata')
-                                <p class="is-size-7 has-text-black">
+
+                            @if ($tipe === 'kos' && !empty($data->tipe_kos))
+                                <span class="tag is-success is-light mb-3">{{ $data->tipe_kos }}</span>
+                            @endif
+
+                            @if ($tipe === 'event')
+                                <p class="is-size-7 has-text-dark mb-1">
+                                    <i class="fas fa-calendar-alt has-text-success me-1"></i> Tanggal: {{ $data->tanggal }}
+                                </p>
+                                <p class="is-size-7 has-text-dark mb-1">
+                                    <i class="fas fa-clock has-text-success me-1"></i> Waktu: {{ $data->waktu }}
+                                </p>
+                                <p class="is-size-7 has-text-dark mb-3">
+                                    <i class="fas fa-map-marker-alt has-text-success me-1"></i> Lokasi: {{ $data->lokasi }}
+                                </p>
+                            @elseif ($tipe === 'info' && !empty($data->tanggal))
+                                <p class="is-size-7 has-text-dark mb-3">
+                                    <i class="fas fa-calendar-alt has-text-success me-1"></i> Tanggal: {{ $data->tanggal }}
+                                </p>
+                            @endif
+
+                            <div class="content is-size-7 has-text-grey-dark">
+                                {!! $tipe === 'kos' ? $data->deskripsi_kos : $data->description !!}
+                            </div>
+
+                            @if ($tipe === 'pariwisata' && isset($data->kabupatens))
+                                <p class="is-size-7 has-text-black mt-2">
                                     Kabupaten: {{ $data->kabupatens->nama_kabupaten }}
                                 </p>
                             @endif
@@ -104,8 +132,12 @@
             <!-- Image Gallery Section -->
             <div class="column is-7">
                 <div class="box">
+                    @php
+                        $fotoPath = $tipe === 'kos' ? $data->foto_kos : $data->foto;
+                        $altTitle = $tipe === 'kos' ? $data->nm_kos : ($tipe === 'info' ? $data->judul : ($tipe === 'event' ? $data->nm_event : ($tipe === 'kuliner' ? $data->nm_kuliner : '')));
+                    @endphp
                     <figure class="image is-4by3">
-                        <img src="{{ asset('storage/' . $data->foto) }}" alt="{{ $tipe === 'pariwisata' ? $data->nm_pariwisata : $data->nm_kuliner }}">
+                        <img src="{{ asset('storage/' . $fotoPath) }}" alt="{{ $altTitle }}" style="object-fit: cover; border-radius: 6px;">
                     </figure>
                 </div>
             </div>

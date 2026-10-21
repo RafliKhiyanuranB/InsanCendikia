@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('foto_kos');
             $table->text('deskripsi_kos');
             $table->string('tipe_kos')->default("kos");
+            $table->string('tipe')->default("kos");
             
             $table->timestamps();
         });

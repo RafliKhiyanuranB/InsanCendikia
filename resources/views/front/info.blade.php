@@ -153,7 +153,7 @@
                                             {{ $item->tanggal }}
                                         </p>
                                         <p class="truncate-text">
-                                            {!! Str::limit($item->description, 150, '...') !!}
+                                            {{ Str::limit(strip_tags($item->description), 150, '...') }}
                                         </p>                                                                                                      
                                     </div>
                                 </div>

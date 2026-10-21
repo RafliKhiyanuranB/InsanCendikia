@@ -33,6 +33,10 @@ class EventController extends Controller
             ->addColumn('foto', function($event) {
                 return asset('storage/' . $event->foto);
             })
+            ->editColumn('description', function($event) {
+                $plain = strip_tags($event->description);
+                return \Illuminate\Support\Str::limit($plain, 80, '...');
+            })
             ->addColumn('action', function($event) {
                 $editUrl = route('event.edit', $event->id);
                 return '
@@ -40,7 +44,7 @@ class EventController extends Controller
                     <button class="btn btn-danger btn-sm delete-btn" data-id="'.$event->id.'">Hapus</button>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['foto', 'description', 'action'])
             ->make(true);
     }
 

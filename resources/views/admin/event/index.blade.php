@@ -73,14 +73,20 @@
                     orderable: false, 
                     searchable: false,
                     render: function(data) {
-                        return `<img src="${data}" alt="Foto Event" style="max-width: 50px;">`;
+                        return `<img src="${data}" alt="Foto Event" style="max-width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">`;
                     }
                 },
                 { data: 'nm_event', name: 'nm_event' },
-                { data: 'description', name: 'description' },
                 { data: 'tanggal', name: 'tanggal' },
                 { data: 'waktu', name: 'waktu' },
                 { data: 'lokasi', name: 'lokasi' },
+                { 
+                    data: 'description', 
+                    name: 'description',
+                    render: function(data) {
+                        return data ? data : '';
+                    }
+                },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

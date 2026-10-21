@@ -61,7 +61,7 @@
                                     <label for="description">Deskripsi</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div id="description-editor"></div>
+                                    <div id="description-editor" style="min-height: 250px;"></div>
                                     <textarea name="description" id="description" style="display: none;">{{ old('description') }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>

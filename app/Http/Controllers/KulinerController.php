@@ -35,7 +35,8 @@ class KulinerController extends Controller
                 return '<img src="'.asset('storage/' . $kuliner->foto).'" alt="Foto Kuliner" width="50">';
             })
             ->addColumn('description', function($kuliner) {
-                return '<p>' . $kuliner->description . '</p>';
+                $plain = strip_tags($kuliner->description);
+                return mb_strlen($plain) > 80 ? mb_substr($plain, 0, 80) . '...' : $plain;
             })
             ->addColumn('action', function ($kuliner) {
                 return '

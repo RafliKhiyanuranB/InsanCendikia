@@ -15,6 +15,7 @@ class Event extends Model
         'tanggal',
         'waktu',
         'lokasi',
-        'description'
+        'description',
+        'tipe'
     ];
 }

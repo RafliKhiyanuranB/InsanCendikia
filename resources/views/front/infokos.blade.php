@@ -151,7 +151,7 @@
                                                         {{ $item->nm_kos }}
                                                     </p>
                                                     <p class="truncate-text">
-                                                        {!! Str::limit($item->deskripsi_kos, 150, '...') !!}
+                                                        {{ Str::limit(strip_tags($item->deskripsi_kos), 150, '...') }}
                                                     </p>                                                                                                       
                                                 </div>
                                             </div>

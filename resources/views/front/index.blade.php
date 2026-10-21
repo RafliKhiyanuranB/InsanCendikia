@@ -161,7 +161,7 @@
                 <div class="card-content">
                   <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
                   <p class="title is-5 has-text-dark">{{ $item->nm_kuliner }}</p>
-                  <p class="subtitle is-6 has-text-dark">{!! Str::limit($item->description, 150, '...') !!}</p>
+                  <p class="subtitle is-6 has-text-dark">{{ Str::limit(strip_tags($item->description), 150, '...') }}</p>
                 </div>
               </div>
             </a>
@@ -192,10 +192,10 @@
             </a>
           </div>
         @empty
-          <p class="column is-full has-text-centered">Tidak ada data Info Kos</p>
+          <p class="column is-full has-text-centered">Tidak ada data Info</p>
         @endforelse
     
-        <!-- Event Section -->
+        <!-- Kos Section -->
         @forelse($kos as $item)
           <div class="column is-one-third">
             <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
@@ -211,13 +211,13 @@
                 <div class="card-content">
                   <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
                   <p class="title is-5 has-text-dark ellipsis">{{ $item->nm_kos }}</p>
-                  <p class="has-text-dark">{!! Str::limit($item->deskripsi_kos, 150, '...') !!}</p>
+                  <p class="subtitle is-6 has-text-dark">{{ Str::limit(strip_tags($item->deskripsi_kos), 150, '...') }}</p>
                 </div>
               </div>
             </a>
           </div>
         @empty
-          <p class="column is-full has-text-centered">Tidak ada data Info Kos</p>
+          <p class="column is-full has-text-centered">Tidak ada data Kos</p>
         @endforelse
       </div>
     </section>       
