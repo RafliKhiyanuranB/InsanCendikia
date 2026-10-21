@@ -32,7 +32,7 @@ class KulinerController extends Controller
 
         return DataTables::of($kuliners)
             ->addColumn('foto', function ($kuliner) {
-                return '<img src="'.asset('storage/' . $kuliner->foto).'" alt="Foto Kuliner" width="50">';
+                return '<img src="'.asset('storage/' . $kuliner->foto).'" alt="Foto Kuliner" style="max-width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
             })
             ->addColumn('description', function($kuliner) {
                 $plain = strip_tags($kuliner->description);

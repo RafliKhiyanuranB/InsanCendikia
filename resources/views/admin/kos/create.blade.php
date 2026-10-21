@@ -100,19 +100,6 @@
         // Set existing content
         quill.root.innerHTML = $('#deskripsi_kos').val();
 
-        var table = $('#kosTable').DataTable({
-            processing: true,
-            serverSide: true,
-            scrollX: true,
-            ajax: '{{ route('kos.getData') }}',  // Mengambil data dari server
-            columns: [
-                { data: 'foto', name: 'foto' },
-                { data: 'nm_kos', name: 'nm_kos' },
-                { data: 'description', name: 'description' },
-                { data: 'tipe', name: 'tipe' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
-        });
         // Sync Quill content to the textarea before form submit
         $('#kosForm').on('submit', function(e) {
             e.preventDefault();
