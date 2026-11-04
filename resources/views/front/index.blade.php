@@ -145,31 +145,6 @@
           <p class="column is-full has-text-centered">Tidak ada data Event</p>
         @endforelse
     
-        <!-- Kuliner Section -->
-        @forelse($kuliner as $item)
-          <div class="column is-one-third">
-            <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
-              <div class="card">
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src="{{ asset('storage/' . $item->foto) }}">
-                  </figure>
-                  <span class="icon has-text-primary is-pulled-right mt-2 mr-2">
-                    <i class="fas fa-heart"></i>
-                  </span>
-                </div>
-                <div class="card-content">
-                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
-                  <p class="title is-5 has-text-dark">{{ $item->nm_kuliner }}</p>
-                  <p class="subtitle is-6 has-text-dark">{{ Str::limit(strip_tags($item->description), 150, '...') }}</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        @empty
-          <p class="column is-full has-text-centered">Tidak ada data Kuliner</p>
-        @endforelse
-    
         <!-- Berita Terkini Section -->
         @forelse($info as $item)
           <div class="column is-one-third">
@@ -195,31 +170,6 @@
           <p class="column is-full has-text-centered">Tidak ada data Info</p>
         @endforelse
     
-        <!-- Kos Section -->
-        @forelse($kos as $item)
-          <div class="column is-one-third">
-            <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
-              <div class="card">
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src="{{ asset('storage/' . $item->foto_kos) }}">
-                  </figure>
-                  <span class="icon has-text-primary is-pulled-right mt-2 mr-2">
-                    <i class="fas fa-heart"></i>
-                  </span>
-                </div>
-                <div class="card-content">
-                  <span class="tag is-success is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
-                  <p class="title is-5 has-text-dark ellipsis">{{ $item->nm_kos }}</p>
-                  <p class="subtitle is-6 has-text-dark">{{ Str::limit(strip_tags($item->deskripsi_kos), 150, '...') }}</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        @empty
-          <p class="column is-full has-text-centered">Tidak ada data Kos</p>
-        @endforelse
-
         <!-- Berita Section -->
         @forelse($berita as $item)
           <div class="column is-one-third">

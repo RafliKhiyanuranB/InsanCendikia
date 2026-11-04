@@ -1,18 +1,14 @@
 <?php
 
-use App\Http\Controllers\KosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\KulinerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ArtikelController;
 use App\Models\Event;
-use App\Models\Kos;
 use App\Models\Info;
-use App\Models\Kuliner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -33,12 +29,15 @@ use Illuminate\Support\Facades\Artisan;
 // });
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
+Route::get('/home', function () {
+    return redirect()->route('front.index');
+})->name('home');
 Route::redirect('/front/detail', '/');
 
 Route::get('/detail/{tipe}/{id}', [FrontController::class, 'detailShow'])->name('detail.show');
 
-Route::get('/detail/infokos', [FrontController::class, 'infoKos'])->name('detail.infokos');
-Route::get('/detail/kuliner', [FrontController::class, 'kuliner'])->name('detail.kuliner');
+Route::redirect('/detail/infokos', '/');
+Route::redirect('/detail/kuliner', '/');
 Route::get('/detail/event', [FrontController::class, 'event'])->name('detail.event');
 Route::get('/detail/info', [FrontController::class, 'info'])->name('detail.info');
 Route::get('/detail/berita', [FrontController::class, 'berita'])->name('detail.berita');
@@ -65,24 +64,6 @@ Route::middleware('auth')->group(function () {
     Route::post('admin/info', [InfoController::class, 'store'])->name('info.store');
     Route::post('/admin/info/update/{id}', [InfoController::class, 'update'])->name('info.update');
     Route::delete('info/{id}', [InfoController::class, 'destroy'])->name('info.destroy');
-
-    // Kuliner
-    Route::get('/admin/kuliner/index', [KulinerController::class, 'index'])->name('kuliner.index');
-    Route::get('/admin/kuliner/data', [KulinerController::class, 'getData'])->name('kuliner.getData');
-    Route::get('/admin/kuliner/create', [KulinerController::class, 'create'])->name('kuliner.create');
-    Route::get('/admin/kuliner/{id}/edit', [KulinerController::class, 'edit'])->name('kuliner.edit');
-    Route::post('admin/kuliner', [KulinerController::class, 'store'])->name('kuliner.store');
-    Route::post('/admin/kuliner/update/{id}', [KulinerController::class, 'update'])->name('kuliner.update');
-    Route::delete('kuliner/{id}', [KulinerController::class, 'destroy'])->name('kuliner.destroy');
-
-    //Kos
-    Route::get('/admin/kos/index', [KosController::class, 'index'])->name('kos.index');
-    Route::get('/admin/kos/data', [KosController::class, 'getKosData'])->name('kos.getData');
-    Route::get('/admin/kos/create', [KosController::class, 'create'])->name('kos.create');
-    Route::get('/admin/kos/{id}/edit', [KosController::class, 'edit'])->name('kos.edit');
-    Route::post('/admin/kos', [KosController::class, 'store'])->name('kos.store');
-    Route::post('/admin/kos/update/{id}', [KosController::class, 'update'])->name('kos.update');
-    Route::delete('kos/{id}', [KosController::class, 'destroy'])->name('kos.destroy');
 
     // Event
     Route::get('/admin/event/index', [EventController::class, 'index'])->name('event.index');

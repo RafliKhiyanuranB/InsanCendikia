@@ -7,10 +7,7 @@
       </div>
       <div class="navbar-end">
           <div class="navbar-item">
-              <a href="{{ route('detail.infokos') }}" class="has-text-black">Info Kos</a>
-          </div>
-          <div class="navbar-item">
-              <a href="{{ route('detail.kuliner') }}" class="has-text-black">Kuliner</a>
+              <a href="{{ route('front.index') }}" class="has-text-black">Home</a>
           </div>
           <div class="navbar-item">
               <a href="{{ route('detail.event') }}" class="has-text-black">Event</a>

@@ -15,12 +15,10 @@ class FrontController extends Controller
     public function index()
     {
         $event   = Event::all();
-        $kos     = Kos::all();
-        $kuliner = Kuliner::all();
         $info    = Info::all();
         $berita  = Berita::latest()->get();
         $artikel = Artikel::latest()->get();
-        return view('front.index', compact('event', 'kos', 'kuliner', 'info', 'berita', 'artikel'));
+        return view('front.index', compact('event', 'info', 'berita', 'artikel'));
     }
 
     public function detailShow($tipe, $id)
@@ -46,14 +44,12 @@ class FrontController extends Controller
 
     public function infoKos()
     {
-        $kos = Kos::all();
-        return view('front.infokos', compact('kos'));
+        return redirect()->route('front.index');
     }
 
     public function kuliner()
     {
-        $kuliner = Kuliner::all();
-        return view('front.kuliner', compact('kuliner'));
+        return redirect()->route('front.index');
     }
 
     public function event()
