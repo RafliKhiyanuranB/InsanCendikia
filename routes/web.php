@@ -15,6 +15,7 @@ use App\Models\Info;
 use App\Models\Kuliner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,4 +110,44 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/artikel', [ArtikelController::class, 'store'])->name('artikel.store');
     Route::post('/admin/artikel/update/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
     Route::delete('artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
+
+    // Helper untuk membuat symlink storage via browser jika hosting tidak memiliki akses SSH
+    Route::get('/admin/create-storage-link', function () {
+        try {
+            Artisan::call('storage:link');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Symlink storage berhasil dibuat: ' . Artisan::output()
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal membuat symlink: ' . $e->getMessage()
+            ], 500);
+        }
+    })->name('admin.storage.link');
 });
+
+// Fallback route: memastikan gambar dari storage tetap muncul di hosting meskipun symlink belum/tidak bisa dibuat
+Route::get('/storage/{path}', function ($path) {
+    // 1. Cek di storage/app/public/
+    $storagePath = storage_path('app/public/' . $path);
+    if (file_exists($storagePath) && is_file($storagePath)) {
+        return response()->file($storagePath);
+    }
+
+    // 2. Fallback cek di public/uploads/ (jika file legacy belum dipindah)
+    $cleanPath = preg_replace('#^uploads/#', '', $path);
+    $publicUploadPath = public_path('uploads/' . $cleanPath);
+    if (file_exists($publicUploadPath) && is_file($publicUploadPath)) {
+        return response()->file($publicUploadPath);
+    }
+
+    // 3. Fallback direct public
+    $directPublic = public_path($path);
+    if (file_exists($directPublic) && is_file($directPublic)) {
+        return response()->file($directPublic);
+    }
+
+    abort(404);
+})->where('path', '.*');

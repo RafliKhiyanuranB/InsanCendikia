@@ -1,8 +1,5 @@
 @extends('index')
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   
-    crossorigin="anonymous">
-</head>
+
 @section('content')
     <div class="pc-container">
         <div class="pc-content">
@@ -46,7 +43,7 @@
                             @foreach($kos as $k)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage/' . $k->foto_kos) }}" width="100">
+                                    <img src="{{ asset('storage/' . $k->foto_kos) }}" alt="Foto Kos" style="max-width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
                                 </td>
                                 <td>{{ $k->nm_kos }}</td>
                                 <td>{{ Str::limit(strip_tags($k->deskripsi_kos), 80, '...') }}</td>
