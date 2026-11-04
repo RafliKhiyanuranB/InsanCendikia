@@ -31,7 +31,7 @@
         <div class="row">
           <div class="col my-1">
             <p class="m-0"
-              >Copyright <i class="fa-regular fa-copyright"></i> 2024 InsanCendikia</p
+              >Copyright <i class="fa-regular fa-copyright"></i> 2024 Infinity</p
             >
           </div>
           <div class="col-auto my-1">

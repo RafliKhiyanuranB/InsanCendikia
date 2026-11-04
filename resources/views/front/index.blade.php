@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>InsanCendikia</title>
+  <title>Infinity</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
   <style>
@@ -219,6 +219,54 @@
         @empty
           <p class="column is-full has-text-centered">Tidak ada data Kos</p>
         @endforelse
+
+        <!-- Berita Section -->
+        @forelse($berita as $item)
+          <div class="column is-one-third">
+            <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="{{ asset('storage/' . $item->foto) }}">
+                  </figure>
+                  <span class="icon has-text-primary is-pulled-right mt-2 mr-2">
+                    <i class="fas fa-heart"></i>
+                  </span>
+                </div>
+                <div class="card-content">
+                  <span class="tag is-info is-normal mb-2 has-text-white">{{ $item->tipe }}</span>
+                  <p class="title is-5 has-text-dark ellipsis">{{ $item->judul }}</p>
+                  <p class="subtitle is-6 has-text-dark">{{ $item->tanggal }}</p>
+                  <p class="is-size-7 has-text-grey">{{ Str::limit(strip_tags($item->konten), 100, '...') }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <p class="column is-full has-text-centered">Tidak ada data Berita</p>
+        @endforelse
+
+        <!-- Artikel Section -->
+        @forelse($artikel as $item)
+          <div class="column is-one-third">
+            <a href="{{ route('detail.show', ['tipe' => $item->tipe, 'id' => $item->id]) }}">
+              <div class="card">
+                <div class="card-content">
+                  <span class="tag is-warning is-normal mb-2 has-text-dark">{{ $item->tipe }}</span>
+                  <p class="title is-5 has-text-dark ellipsis">{{ $item->judul }}</p>
+                  <p class="subtitle is-6 has-text-grey">
+                    <i class="fas fa-user me-1"></i>{{ $item->penulis }} &nbsp;|&nbsp;
+                    <i class="fas fa-calendar-alt me-1"></i>{{ $item->tanggal }}
+                  </p>
+                  <p class="is-size-7 has-text-grey">{{ Str::limit(strip_tags($item->konten), 120, '...') }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <p class="column is-full has-text-centered">Tidak ada data Artikel</p>
+        @endforelse
+
       </div>
     </section>       
       

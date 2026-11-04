@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>InsanCendikia</title>
+    <title>Infinity</title>
     <!-- Poppins Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Bulma CSS -->
@@ -86,6 +86,10 @@
                                     {{ $data->judul }}
                                 @elseif ($tipe === 'kos')
                                     {{ $data->nm_kos }}
+                                @elseif ($tipe === 'berita')
+                                    {{ $data->judul }}
+                                @elseif ($tipe === 'artikel')
+                                    {{ $data->judul }}
                                 @endif
                             </p>
 
@@ -107,10 +111,27 @@
                                 <p class="is-size-7 has-text-dark mb-3">
                                     <i class="fas fa-calendar-alt has-text-success me-1"></i> Tanggal: {{ $data->tanggal }}
                                 </p>
+                            @elseif ($tipe === 'berita' && !empty($data->tanggal))
+                                <p class="is-size-7 has-text-dark mb-3">
+                                    <i class="fas fa-calendar-alt has-text-info me-1"></i> Tanggal: {{ $data->tanggal }}
+                                </p>
+                            @elseif ($tipe === 'artikel')
+                                <p class="is-size-7 has-text-dark mb-1">
+                                    <i class="fas fa-user has-text-warning me-1"></i> Penulis: {{ $data->penulis }}
+                                </p>
+                                <p class="is-size-7 has-text-dark mb-3">
+                                    <i class="fas fa-calendar-alt has-text-warning me-1"></i> Tanggal: {{ $data->tanggal }}
+                                </p>
                             @endif
 
                             <div class="content is-size-7 has-text-grey-dark">
-                                {!! $tipe === 'kos' ? $data->deskripsi_kos : $data->description !!}
+                                @if ($tipe === 'kos')
+                                    {!! $data->deskripsi_kos !!}
+                                @elseif ($tipe === 'berita' || $tipe === 'artikel')
+                                    {!! $data->konten !!}
+                                @else
+                                    {!! $data->description !!}
+                                @endif
                             </div>
 
                             @if ($tipe === 'pariwisata' && isset($data->kabupatens))
@@ -133,12 +154,19 @@
             <div class="column is-7">
                 <div class="box">
                     @php
-                        $fotoPath = $tipe === 'kos' ? $data->foto_kos : $data->foto;
-                        $altTitle = $tipe === 'kos' ? $data->nm_kos : ($tipe === 'info' ? $data->judul : ($tipe === 'event' ? $data->nm_event : ($tipe === 'kuliner' ? $data->nm_kuliner : '')));
+                        $fotoPath = $tipe === 'kos' ? $data->foto_kos : ($tipe === 'artikel' ? null : $data->foto);
+                        $altTitle = $tipe === 'kos' ? $data->nm_kos : ($tipe === 'info' || $tipe === 'berita' || $tipe === 'artikel' ? $data->judul : ($tipe === 'event' ? $data->nm_event : ($tipe === 'kuliner' ? $data->nm_kuliner : '')));
                     @endphp
-                    <figure class="image is-4by3">
-                        <img src="{{ asset('storage/' . $fotoPath) }}" alt="{{ $altTitle }}" style="object-fit: cover; border-radius: 6px;">
-                    </figure>
+                    @if($tipe === 'artikel')
+                        <div class="notification is-warning is-light" style="text-align:center; padding: 60px 20px;">
+                            <span class="icon is-large"><i class="fas fa-file-alt fa-3x"></i></span>
+                            <p class="mt-3 has-text-weight-semibold">Artikel tidak memiliki gambar</p>
+                        </div>
+                    @else
+                        <figure class="image is-4by3">
+                            <img src="{{ asset('storage/' . $fotoPath) }}" alt="{{ $altTitle }}" style="object-fit: cover; border-radius: 6px;">
+                        </figure>
+                    @endif
                 </div>
             </div>
         </div>

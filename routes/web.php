@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KulinerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ArtikelController;
 use App\Models\Event;
 use App\Models\Kos;
 use App\Models\Info;
@@ -38,6 +40,8 @@ Route::get('/detail/infokos', [FrontController::class, 'infoKos'])->name('detail
 Route::get('/detail/kuliner', [FrontController::class, 'kuliner'])->name('detail.kuliner');
 Route::get('/detail/event', [FrontController::class, 'event'])->name('detail.event');
 Route::get('/detail/info', [FrontController::class, 'info'])->name('detail.info');
+Route::get('/detail/berita', [FrontController::class, 'berita'])->name('detail.berita');
+Route::get('/detail/artikel', [FrontController::class, 'artikel'])->name('detail.artikel');
 
 
 Route::get('/login/form', [LoginController::class, 'loginForm'])->name('login');
@@ -45,7 +49,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect()->route('login');
+    return redirect()->route('front.index');
 })->name('logout');
 
 Route::middleware('auth')->group(function () {
@@ -87,4 +91,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/event', [EventController::class, 'store'])->name('event.store');
     Route::post('/admin/event/update/{id}', [EventController::class, 'update'])->name('event.update');
     Route::delete('event/{id}', [EventController::class, 'destroy'])->name('event.destroy');
+
+    // Berita
+    Route::get('/admin/berita/index', [BeritaController::class, 'index'])->name('berita.index');
+    Route::get('/admin/berita/data', [BeritaController::class, 'getData'])->name('berita.getData');
+    Route::get('/admin/berita/create', [BeritaController::class, 'create'])->name('berita.create');
+    Route::get('/admin/berita/{id}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
+    Route::post('/admin/berita', [BeritaController::class, 'store'])->name('berita.store');
+    Route::post('/admin/berita/update/{id}', [BeritaController::class, 'update'])->name('berita.update');
+    Route::delete('berita/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+    // Artikel
+    Route::get('/admin/artikel/index', [ArtikelController::class, 'index'])->name('artikel.index');
+    Route::get('/admin/artikel/data', [ArtikelController::class, 'getData'])->name('artikel.getData');
+    Route::get('/admin/artikel/create', [ArtikelController::class, 'create'])->name('artikel.create');
+    Route::get('/admin/artikel/{id}/edit', [ArtikelController::class, 'edit'])->name('artikel.edit');
+    Route::post('/admin/artikel', [ArtikelController::class, 'store'])->name('artikel.store');
+    Route::post('/admin/artikel/update/{id}', [ArtikelController::class, 'update'])->name('artikel.update');
+    Route::delete('artikel/{id}', [ArtikelController::class, 'destroy'])->name('artikel.destroy');
 });
