@@ -7,9 +7,6 @@
       </div>
       <div class="navbar-end">
           <div class="navbar-item">
-              <a href="{{ route('front.index') }}" class="has-text-black">Home</a>
-          </div>
-          <div class="navbar-item">
               <a href="{{ route('detail.event') }}" class="has-text-black">Event</a>
           </div>
           <div class="navbar-item">
